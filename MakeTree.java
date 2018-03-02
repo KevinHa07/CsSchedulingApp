@@ -86,7 +86,7 @@ public class MakeTree {
 					for(int i = 0; i < path.size(); i++){
 						System.out.println(path.get(i).getData());
 					}
-					sc = curr.getSemesterCourses(curr.getPath());//list of semester courses for the current path
+					sc = curr.getSemesterCourses();//list of semester courses for the current path
 					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
 						numberOfRoadMapsGenerated++;
 						roadMaps.add(path);

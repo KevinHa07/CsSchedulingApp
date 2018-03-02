@@ -147,7 +147,7 @@ public class Node{
 		this.semesterCode = semesterCode;
 	}
 
-	public List<SemesterCourses> getSemesterCourses(List<Node> path) {
+	public List<SemesterCourses> getSemesterCourses() {
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
 		int year = Year.now().getValue();
@@ -182,11 +182,11 @@ public class Node{
 			semesterCode = semesters[index] + " " + year;
 		}
 		
-		for(int i = 0; i < path.size(); i++) {
+		for(int i = 0; i < this.path.size(); i++) {
 			//updates the index for the semester array to get the correct semester	
 			semesterCode = semesters[index] + " " + year;
 			System.out.println(semesterCode);
-			SemesterCourses sc = new SemesterCourses(semesterCode, path.get(i).getData()); 
+			SemesterCourses sc = new SemesterCourses(semesterCode, this.path.get(i).getData()); 
 			semesterCourses.add(sc);
 			if(index % 2 == 0) { 
 				index++;
