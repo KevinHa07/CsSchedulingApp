@@ -44,10 +44,10 @@ public class AvailableClasses {
 			return availableClasses;
 		}
 
-		List<ClassInfo> curr = new ArrayList<>();
-		for(int i = 0; i < current.size(); i++){
-			curr.add(allClassInfo.get(current.get(i)));
-		}
+//		List<ClassInfo> curr = new ArrayList<>();
+//		for(int i = 0; i < current.size(); i++){
+//			curr.add(allClassInfo.get(current.get(i)));
+//		}
 		
 		for(String className: setOfAvailableClasses){
 			if(allClassInfo.containsKey(className)) {
@@ -57,7 +57,7 @@ public class AvailableClasses {
 						availableClasses.add(className);
 					}
 					//if there's a prerequisite, check to see if the student has taken the classes needed to add class to available classes that user can take
-					else if(classInfo.getPrerequisites() != null && curr.containsAll(classInfo.getPrerequisites()) && electiveUnits < 18) { 
+					else if(classInfo.getPrerequisites() != null && current.containsAll(classInfo.getPrerequisites()) && electiveUnits < 18) { 
 						availableClasses.add(className);	
 					}
 				}
