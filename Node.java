@@ -48,6 +48,7 @@ public class Node{
 		//find classes that are available to take next
 		AvailableClasses av = new AvailableClasses(classesTaken);
 		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits);
+		this.availableClasses = available;
 				
 		//find all combination
 		Combinations cb = new Combinations();

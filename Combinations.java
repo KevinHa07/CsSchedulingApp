@@ -57,8 +57,9 @@ public class Combinations {
                temp = tempCombo.get(j);
                tempList.add(temp);
                
-               if(listOfClasses.containsKey(temp)) {			
-   					classInfo.add(listOfClasses.get(temp));
+               if(listOfClasses.containsKey(temp)) {
+   				
+   						classInfo.add(listOfClasses.get(temp));
                }
                
             }
@@ -71,10 +72,17 @@ public class Combinations {
             	totalUnits += classInfo.get(j).getUnits();
             }
             
-            if(maxUnit >= totalUnits || minUnit <= totalUnits ){
+            if(maxUnit >= totalUnits && minUnit <= totalUnits ){
+            	
             	Node node = new Node(tempList);
+            	
             	combClasses.add(node);
-			}	
+            	
+            	if(combClasses.isEmpty()){
+            		System.out.println("");
+            	}
+			}
+            
             return;
 		}
 		

@@ -11,12 +11,14 @@ public class AvailableClasses {
 
 	private List<String> current;
 	
-	long startTime = MakeTree.startTime;
-	
 	//takes in a node that has an arraylist of classInfo 
 	public AvailableClasses(List<String> classtaken) {
 		this.current = classtaken;
-		
+//		System.out.println(" ");
+//		for(int i = 0; i < classtaken.size(); i++){
+//			System.out.println(classtaken.get(i));
+//		}
+
 	}
 	
 	//This method takes in the arraylist of ClassInfo to remove classes that the student has already taken from an arraylist of all classes

@@ -17,18 +17,20 @@ public class MakeTree {
 	
 	//set the initial taken classes as parent node. Start the BFS. Go through the queue, the 
 	//children of the element, remove the head, repeat
-	
-//	String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
-	String[] semesters = {"Spring", "Fall"};
-	int year = Year.now().getValue();
-	int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
-	String semesterCode;
-	
+
 	public MakeTree(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMin, int unitsMax) {
-		
 		Queue<Node> queue = new LinkedList<Node>();
-		
 		Set<List<String>> visited = new HashSet<List<String>>();
+		List<SemesterCourses> sc;
+		List<List<Node>> roadMaps = new ArrayList<>();
+		int numberOfRoadMapsGenerated = 0;
+		int amountOfRoadMaps = 3;
+		
+//		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
+		String[] semesters = {"Spring", "Fall"};
+		int year = Year.now().getValue();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+		String semesterCode = "";
 		
 		int index = 0;
 		
@@ -70,6 +72,10 @@ public class MakeTree {
 			Node curr = new Node(null);
 			curr = queue.remove();
 			
+			if(queue.size() == 2){
+				System.out.println("");
+			}
+			
 			//check if curr is in visited
 			if(isVisited(visited, curr)){
 				
@@ -86,29 +92,26 @@ public class MakeTree {
 						System.out.println(path.get(i).getData());
 						System.out.println(path.get(i).getSemesterCode());
 					}
+					sc = curr.getSemesterCourses();//list of semester courses for the current path
+					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
+						numberOfRoadMapsGenerated++;
+						roadMaps.add(path);
+					}
 					
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
 					System.out.print(totaltime);
 					System.exit(0);
 
-					
-					
 				}else{
 					//add children to the path
 					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMin, unitsMax, semesters[index])){
 						curr.addChild(c);
 						c.addToPath(c, curr.getPath());
-						//updates the index for the semester array to get the correct semester
-						if(index == 0) { 
-							semesterCode = semesters[index] + " " + year;
-							c.setSemesterCode(semesterCode);
-						}
-						else {
-							semesterCode = semesters[index] + " " + year;
-							c.setSemesterCode(semesterCode);
-						}
-						
+						//updates the index for the semester array to get the correct semester	
+						semesterCode = semesters[index] + " " + year;
+						c.setSemesterCode(semesterCode);
+					
 						//get the children and add them to the queue
 						queue.add(c);
 					}
@@ -126,12 +129,18 @@ public class MakeTree {
 		}
 	}
 	
+//	public List<SemesterCourses> getSemesterCourses(){
+//		
+//	}
+	
 	public boolean isVisited(Set<List<String>> visited, Node curr){
 		
-		if( visited.containsAll(curr.getTakenClasses()) && !curr.getTakenClasses().isEmpty()){
+		int pSize = curr.getPath().size();
+		
+		if( visited.contains(curr.getPath().get(pSize - 1).getData()) && !curr.getPath().get(pSize - 1).getData().isEmpty()){
 			return true;
 		}else{
-			visited.add(curr.getTakenClasses());
+			visited.add(curr.getPath().get(pSize - 1).getData());
 			return false;
 		}
 	}
