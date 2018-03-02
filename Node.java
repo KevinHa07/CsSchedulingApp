@@ -1,5 +1,7 @@
 package BFS;
 
+import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ public class Node{
     private List<String> availableClasses;
     
     List<Node> children = new ArrayList<>();
-    List<SemesterCourses> semesterCourses;
+    List<SemesterCourses> semesterCourses = new ArrayList<>();
 
 	private List<Node> path = new ArrayList<>();
     private List<String> takenClassesFromPath = new ArrayList<String>();
@@ -145,10 +147,55 @@ public class Node{
 		this.semesterCode = semesterCode;
 	}
 
-	public List<SemesterCourses> getSemesterCourses() {
-		for(Node n : this.path) {
-			SemesterCourses sc = new SemesterCourses(semesterCode, n.getData()); 
+	public List<SemesterCourses> getSemesterCourses(List<Node> path) {
+//		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
+		String[] semesters = {"Spring", "Fall"};
+		int year = Year.now().getValue();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+		String semesterCode = "";
+		
+		int index = 0;
+		
+//		if(weekOfYear >= 32 && weekOfYear < 51) {
+//			index = 3;
+//			semesterCode += semesters[index] + " " + year;
+//		}
+//		else if(weekOfYear >= 1 && weekOfYear < 3) {
+//			index = 0;
+//			semesterCode += semesters[index] + " " + ++year;
+//		}
+//		else if(weekOfYear >= 3 && weekOfYear < 21) {
+//			index = 1;
+//			semesterCode += semesters[index] + " " + ++year;
+//		}
+//		else if(weekOfYear >= 21 && weekOfYear < 32) {
+//			index = 2;
+//			semesterCode += semesters[index] + " " + ++year;
+//		}
+		
+		if(weekOfYear >= 21 && weekOfYear < 51) {
+			index = 1;
+			semesterCode = semesters[index] + " " + year;
+		}
+		else if(weekOfYear >= 1 && weekOfYear < 21) {
+			index = 0;
+			semesterCode = semesters[index] + " " + year;
+		}
+		
+		for(int i = 0; i < path.size(); i++) {
+			//updates the index for the semester array to get the correct semester	
+			semesterCode = semesters[index] + " " + year;
+			System.out.println(semesterCode);
+			SemesterCourses sc = new SemesterCourses(semesterCode, path.get(i).getData()); 
 			semesterCourses.add(sc);
+			if(index % 2 == 0) { 
+				index++;
+				
+			}
+			else {//if its winter or spring, then new year starts
+				year++;
+				index = 0;
+			}
 		}
 		return semesterCourses;
 	}

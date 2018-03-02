@@ -28,9 +28,7 @@ public class MakeTree {
 		
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
-		int year = Year.now().getValue();
 		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
-		String semesterCode = "";
 		
 		int index = 0;
 		
@@ -53,11 +51,9 @@ public class MakeTree {
 		
 		if(weekOfYear >= 21 && weekOfYear < 51) {
 			index = 1;
-			semesterCode = semesters[index] + " " + year;
 		}
 		else if(weekOfYear >= 1 && weekOfYear < 21) {
 			index = 0;
-			semesterCode = semesters[index] + " " + year;
 		}
 
 		//initial parent node
@@ -65,7 +61,6 @@ public class MakeTree {
 		parentNode.setData(classesTaken);
 		queue.add(parentNode); 
 		parentNode.startPath(parentNode);	
-		parentNode.setSemesterCode(semesterCode);
 		
 		while(!queue.isEmpty()){
 			
@@ -90,9 +85,8 @@ public class MakeTree {
 					List<Node> path = curr.getPath();
 					for(int i = 0; i < path.size(); i++){
 						System.out.println(path.get(i).getData());
-						System.out.println(path.get(i).getSemesterCode());
 					}
-					sc = curr.getSemesterCourses();//list of semester courses for the current path
+					sc = curr.getSemesterCourses(curr.getPath());//list of semester courses for the current path
 					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
 						numberOfRoadMapsGenerated++;
 						roadMaps.add(path);
@@ -108,10 +102,7 @@ public class MakeTree {
 					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMin, unitsMax, semesters[index])){
 						curr.addChild(c);
 						c.addToPath(c, curr.getPath());
-						//updates the index for the semester array to get the correct semester	
-						semesterCode = semesters[index] + " " + year;
-						c.setSemesterCode(semesterCode);
-					
+						
 						//get the children and add them to the queue
 						queue.add(c);
 					}
@@ -119,8 +110,7 @@ public class MakeTree {
 						index++;
 						
 					}
-					else {//if its winter or spring, then new year starts
-						year++;
+					else {
 						index = 0;
 					}
 					
@@ -146,8 +136,8 @@ public class MakeTree {
 	}
 	
 	public boolean checkGoal(Node curr){
-		// curr.getData().contains("CS4440")
-		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
+		if(curr.getData().contains("CS4440")){
+//		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
 			return true;
 		}else{
 			
