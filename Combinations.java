@@ -59,7 +59,7 @@ public class Combinations {
                
                if(listOfClasses.containsKey(temp)) {
    				
-   						classInfo.add(listOfClasses.get(temp));
+   					classInfo.add(listOfClasses.get(temp));
                }
                
             }

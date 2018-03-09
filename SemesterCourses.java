@@ -28,5 +28,7 @@ public class SemesterCourses {
 		this.courses = courses;
 	}
 	
-	
+	public String toString() {
+		return semesterCode + courses;
+	}
 }

@@ -9,23 +9,17 @@ public class DisplayClass {
 
 	List<ClassInfo> ClassList;
 	Scanner in = new Scanner(System.in);
+	int unitsMin;
+	int unitsMax;
 
 	public DisplayClass(List<ClassInfo> list) {
 		this.ClassList = list;
-		Display();
 	}
 	
-	
-
-	@SuppressWarnings("unused")
-	public void Display() {
+	public List<SemesterCourses> Display() {
 		List<String> classesTaken = new ArrayList<>();
-		int unitsMin;
-		int unitsMax;
-		
-		
 
-		// ask if user if they have taken class
+		//ask if user if they have taken class
 		for (int i = 0; i < ClassList.size(); i++) {
 			takenClass(i);
 		}
@@ -33,7 +27,7 @@ public class DisplayClass {
 		System.out.println();
 		System.out.println();
 		
-		// display classes that have been taken
+		//display classes that have been taken
 		for (int i = 0; i < ClassList.size(); i++) {
 			if (ClassList.get(i).isCompleted()) {
 				System.out.println(ClassList.get(i).toString());
@@ -42,25 +36,24 @@ public class DisplayClass {
 
 		}
 		
-		//make static hashmap
-		//instead of having List of ClassInfo have list of strings with the class names and then the string of class names will have the key to the array of class info
+		
 		HashMap<String, ClassInfo> map = new HashMap<>();
+		
 		//store the classinfo in the hashmap
 		for(int i = 0; i < ClassList.size(); i++){
 			map.put(ClassList.get(i).getName(), ClassList.get(i));
 		}
 		
-		//ask how many units they want to take
-		System.out.println("What is the minimum number of Units you would like to take per Semester. "); // put different recemendations, international students, part time full time, 12 is usual, 18 max
-		unitsMin = Integer.parseInt(in.next());
 		
-		System.out.println("What is the maximum number of Units you would like to take per Semester. "); // put different recemendations, international students, part time full time, 12 is usual, 18 max
-		unitsMax = Integer.parseInt(in.next());
-		
+		minUnits();
+		maxUnits();
 		
 		
 		//create tree
-		MakeTree mt = new MakeTree(classesTaken, map, unitsMin, unitsMax);
+		MakeTree mt = new MakeTree();
+		
+		List<SemesterCourses> sc = mt.start(classesTaken, map, unitsMin, unitsMax);
+		return sc;
 			
 	}
 
@@ -105,6 +98,47 @@ public class DisplayClass {
 			
 		}else {
 			whatGrade(i);
+		}
+	}
+	
+	public void minUnits(){
+		//ask how many units they want to take
+		System.out.println("What is the minimum number of Units you would like to take per Semester. ");
+		
+		try {
+			
+		    unitsMin = Integer.parseInt(in.next());
+		} catch (NumberFormatException e) {
+			
+		    System.out.println("Invalid input");
+		    System.out.println("");
+		    unitsMin = 0;
+		    minUnits();
+		    
+		}
+	}
+	
+	public void maxUnits(){
+				
+		System.out.println("What is the maximum number of Units you would like to take per Semester. ");
+		
+		try {
+			
+		    unitsMax = Integer.parseInt(in.next());
+		    
+		    if(unitsMax < unitsMin){
+				System.out.println("Max cannot be less then Min");
+				System.out.println("");
+				unitsMax = 0;
+				maxUnits();
+			}
+		    
+		} catch (NumberFormatException e) {
+			
+		    System.out.println("Invalid input");
+		    System.out.println("");
+			unitsMax = 0;
+		    maxUnits();
 		}
 	}
 }

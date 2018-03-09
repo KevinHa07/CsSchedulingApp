@@ -65,10 +65,10 @@ public class AvailableClasses {
 				}
 			}
 		}
-		System.out.println("Current semester: " + currSemester);
-		for(int i = 0; i < availableClasses.size(); i++){
-			System.out.println(availableClasses.get(i));
-		}
+//		System.out.println("Current semester: " + currSemester);
+//		for(int i = 0; i < availableClasses.size(); i++){
+//			System.out.println(availableClasses.get(i));
+//		}
 		return availableClasses;
 		
 	}

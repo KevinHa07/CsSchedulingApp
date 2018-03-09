@@ -46,10 +46,10 @@ public class Node{
 		
 		Set<String> keySet = listOfClasses.keySet();
 		List<String> allClasses = new ArrayList<String>(keySet);
-		
+		int electiveUnits = getNumOfElectiveUnits(listOfClasses);
 		//find classes that are available to take next
 		AvailableClasses av = new AvailableClasses(classesTaken);
-		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits);
+		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, electiveUnits);
 		this.availableClasses = available;
 				
 		//find all combination
@@ -83,7 +83,13 @@ public class Node{
         return parent;
     }
 
-    public int getNumOfElectiveUnits() {
+    public int getNumOfElectiveUnits(HashMap<String, ClassInfo> listOfClasses) {
+    	for(String c : getTakenClasses()) {
+    		ClassInfo ci = listOfClasses.get(c);
+    		if(ci.isElective()) {
+    			addNumOfElectiveUnits(ci.getUnits());
+    		}
+    	}
 		return numOfElectiveUnits;
 	}
 
@@ -182,12 +188,12 @@ public class Node{
 			semesterCode = semesters[index] + " " + year;
 		}
 		
-		for(int i = 0; i < this.path.size(); i++) {
+		for(int i = 1; i < this.path.size(); i++) {
 			//updates the index for the semester array to get the correct semester	
 			semesterCode = semesters[index] + " " + year;
-			System.out.println(semesterCode);
 			SemesterCourses sc = new SemesterCourses(semesterCode, this.path.get(i).getData()); 
 			semesterCourses.add(sc);
+			System.out.println(sc);
 			if(index % 2 == 0) { 
 				index++;
 				

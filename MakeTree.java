@@ -18,13 +18,18 @@ public class MakeTree {
 	//set the initial taken classes as parent node. Start the BFS. Go through the queue, the 
 	//children of the element, remove the head, repeat
 
-	public MakeTree(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMin, int unitsMax) {
+	public MakeTree() {
+		
+	}
+	
+	public List<SemesterCourses> start(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMin, int unitsMax) {
 		Queue<Node> queue = new LinkedList<Node>();
 		Set<List<String>> visited = new HashSet<List<String>>();
-		List<SemesterCourses> sc;
-		List<List<Node>> roadMaps = new ArrayList<>();
-		int numberOfRoadMapsGenerated = 0;
-		int amountOfRoadMaps = 3;
+		List<SemesterCourses> sc = null;
+		boolean breakWhile = false;
+//		List<List<Node>> roadMaps = new ArrayList<>();
+//		int numberOfRoadMapsGenerated = 0;
+//		int amountOfRoadMaps = 3;
 		
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
@@ -59,6 +64,7 @@ public class MakeTree {
 		//initial parent node
 		Node parentNode = new Node(null);
 		parentNode.setData(classesTaken);
+		
 		queue.add(parentNode); 
 		parentNode.startPath(parentNode);	
 		
@@ -82,20 +88,21 @@ public class MakeTree {
 				//check if curr is goal node
 				if(checkGoal(curr)){			
 					//if so print path
-					List<Node> path = curr.getPath();
-					for(int i = 0; i < path.size(); i++){
-						System.out.println(path.get(i).getData());
-					}
+					//List<Node> path = curr.getPath();
 					sc = curr.getSemesterCourses();//list of semester courses for the current path
-					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
-						numberOfRoadMapsGenerated++;
-						roadMaps.add(path);
-					}
+					
+					breakWhile = true;
+					
+//					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
+//						numberOfRoadMapsGenerated++;
+//						roadMaps.add(path);
+//					}
 					
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
 					System.out.print(totaltime);
-					System.exit(0);
+					
+					//System.exit(0);
 
 				}else{
 					//add children to the path
@@ -106,17 +113,23 @@ public class MakeTree {
 						//get the children and add them to the queue
 						queue.add(c);
 					}
+					
+					//increment semesters
 					if(index % 2 == 0) { 
 						index++;
-						
 					}
 					else {
 						index = 0;
 					}
-					
 				}
 			}
+			
+			if(breakWhile == true){
+				break;
+			}
 		}
+		
+		return sc;
 	}
 	
 //	public List<SemesterCourses> getSemesterCourses(){
@@ -136,8 +149,7 @@ public class MakeTree {
 	}
 	
 	public boolean checkGoal(Node curr){
-		if(curr.getData().contains("CS4440")){
-//		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
+		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
 			return true;
 		}else{
 			
@@ -145,20 +157,4 @@ public class MakeTree {
 		}
 	}
 	
-	
-	
-
-//	
-//	//make sure to use getNumOfElectives method in combinations class to get the correct combination of classes and not add too many elective units
-//	//int currentElectiveUnits = nodeClasses.getParent().getNumOfElectiveUnits();//get amount of elective units from parent node and adds it to current node
-//	//nodeClasses.addNumOfElectiveUnits(currentElectiveUnits);//adds total elective units taken to current node
-//	for(ClassInfo c : combOfClasses.get(i)) { //this goes through the children for this node to check amount of electives and check goal node
-//		if(c.isElective()) {
-//			nodeClasses.addNumOfElectiveUnits(c.getUnits());//add the amount of elective units taken from a combination of classes to current node
-//		}
-//		if(c.getName().toLowerCase().equals("cs4962") || c.getName().toLowerCase().equals("cs4963")) {//temporary check goal node fix 
-//			nodeClasses.setGoal(true);
-//		}
-//	}
-//
 }
