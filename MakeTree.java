@@ -14,6 +14,7 @@ public class MakeTree {
 	
 	//test time
 	public static long startTime = System.currentTimeMillis();
+	private List<List<SemesterCourses>> listOfPaths = new ArrayList<>();
 	
 	//set the initial taken classes as parent node. Start the BFS. Go through the queue, the 
 	//children of the element, remove the head, repeat
@@ -27,9 +28,11 @@ public class MakeTree {
 		Set<List<String>> visited = new HashSet<List<String>>();
 		List<SemesterCourses> sc = null;
 		boolean breakWhile = false;
-//		List<List<Node>> roadMaps = new ArrayList<>();
-//		int numberOfRoadMapsGenerated = 0;
-//		int amountOfRoadMaps = 3;
+		int numberOfRoadMapsGenerated = 0;
+		int amountOfRoadMaps = 3;
+		int currSemesterSize = 0;
+		int nextSemesterSize = 0;
+		int counter = 0;
 		
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
@@ -91,12 +94,18 @@ public class MakeTree {
 					//List<Node> path = curr.getPath();
 					sc = curr.getSemesterCourses();//list of semester courses for the current path
 					
-					breakWhile = true;
 					
-//					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
-//						numberOfRoadMapsGenerated++;
-//						roadMaps.add(path);
-//					}
+					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
+						numberOfRoadMapsGenerated++;
+						listOfPaths.add(sc);
+					}
+					else {
+						System.out.println("Number of paths: " + listOfPaths.size());
+						for(List<SemesterCourses> c : listOfPaths) {
+							System.out.println(c);
+						}
+						breakWhile = true;
+					}
 					
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
@@ -105,6 +114,7 @@ public class MakeTree {
 					//System.exit(0);
 
 				}else{
+					counter++;
 					//add children to the path
 					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMin, unitsMax, semesters[index])){
 						curr.addChild(c);
@@ -112,15 +122,27 @@ public class MakeTree {
 						
 						//get the children and add them to the queue
 						queue.add(c);
+						currSemesterSize++;
+					}
+					if(nextSemesterSize == 0) {
+						nextSemesterSize = currSemesterSize;
+						currSemesterSize = 0;
+						counter = 0;
+					}
+					else if(counter == nextSemesterSize) {
+						nextSemesterSize = currSemesterSize;
+						currSemesterSize = 0;
+						counter = 0;
+						//increment semesters
+						if(index % 2 == 0) { 
+							index++;
+						}
+						else {
+							index = 0;
+						}
 					}
 					
-					//increment semesters
-					if(index % 2 == 0) { 
-						index++;
-					}
-					else {
-						index = 0;
-					}
+					
 				}
 			}
 			
@@ -132,9 +154,9 @@ public class MakeTree {
 		return sc;
 	}
 	
-//	public List<SemesterCourses> getSemesterCourses(){
-//		
-//	}
+	public List<List<SemesterCourses>> getSemesterCourses(){
+		return listOfPaths;
+	}
 	
 	public boolean isVisited(Set<List<String>> visited, Node curr){
 		

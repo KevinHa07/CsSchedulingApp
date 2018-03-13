@@ -30,6 +30,8 @@ public class AvailableClasses {
 		setOfAvailableClasses.removeAll(current);//removes all classes taken from the list of classes to have it only have available classes for student to take
 		
 		List<String> availableClasses = new ArrayList<>();
+		
+		
 		//if student hasn't taken any classes, add classes that has no prerequisites into available class arraylist
 		if(current.size() == 0) {
 			for(String className: setOfAvailableClasses){
@@ -69,6 +71,8 @@ public class AvailableClasses {
 //		for(int i = 0; i < availableClasses.size(); i++){
 //			System.out.println(availableClasses.get(i));
 //		}
+		System.out.println("Current semester: " + currSemester);
+		System.out.println(availableClasses);
 		return availableClasses;
 		
 	}
