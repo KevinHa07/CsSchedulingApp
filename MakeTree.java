@@ -30,15 +30,15 @@ public class MakeTree {
 		boolean breakWhile = false;
 		int numberOfRoadMapsGenerated = 0;
 		int amountOfRoadMaps = 3;
-		int currSemesterSize = 0;
-		int nextSemesterSize = 0;
+		int currLevelSize = 0;
+		int nextLevelSize = 0;
 		int counter = 0;
 		
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
-		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+//		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		
-		int index = 0;
+		int index = 1;
 		
 //		if(weekOfYear >= 32 && weekOfYear < 51) {
 //			index = 3;
@@ -57,12 +57,12 @@ public class MakeTree {
 //			semesterCode += semesters[index] + " " + ++year;
 //		}
 		
-		if(weekOfYear >= 21 && weekOfYear < 51) {
-			index = 1;
-		}
-		else if(weekOfYear >= 1 && weekOfYear < 21) {
-			index = 0;
-		}
+//		if(weekOfYear >= 21 && weekOfYear < 51) {
+//			index = 1;
+//		}
+//		else if(weekOfYear >= 1 && weekOfYear < 21) {
+//			index = 0;
+//		}
 
 		//initial parent node
 		Node parentNode = new Node(null);
@@ -122,16 +122,23 @@ public class MakeTree {
 						
 						//get the children and add them to the queue
 						queue.add(c);
-						currSemesterSize++;
+						currLevelSize++;
 					}
-					if(nextSemesterSize == 0) {
-						nextSemesterSize = currSemesterSize;
-						currSemesterSize = 0;
+					if(nextLevelSize == 0) {//after getting the children for the first time set currlevel to nextlevel to keep track of level of when the semester should change
+						nextLevelSize = currLevelSize;
+						currLevelSize = 0;
 						counter = 0;
+						//increment semesters
+						if(index % 2 == 0) { 
+							index++;
+						}
+						else {
+							index = 0;
+						}
 					}
-					else if(counter == nextSemesterSize) {
-						nextSemesterSize = currSemesterSize;
-						currSemesterSize = 0;
+					else if(counter == nextLevelSize) {//counter is the the amount of children in the current level and if it equals to nextlevel, transition to next semester
+						nextLevelSize = currLevelSize;
+						currLevelSize = 0;
 						counter = 0;
 						//increment semesters
 						if(index % 2 == 0) { 

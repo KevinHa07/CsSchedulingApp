@@ -59,13 +59,12 @@ public class Combinations {
                
                if(listOfClasses.containsKey(temp)) {
    				
-   					classInfo.add(listOfClasses.get(temp));
+   						classInfo.add(listOfClasses.get(temp));
                }
                
             }
             
             //check to see if the combo fits in the desired unit preference
-            
             
             int totalUnits = 0;
             for (int j = 0; j < classInfo.size(); j++){
@@ -77,11 +76,14 @@ public class Combinations {
             	Node node = new Node(tempList);
             	
             	combClasses.add(node);
-            	
-            	if(combClasses.isEmpty()){
-            		System.out.println("");
-            	}
 			}
+            
+            //keep top 3
+            for(int i = 0; combClasses.size() > 3;){
+            	combClasses.remove(i);
+            }
+            
+            
             
             return;
 		}

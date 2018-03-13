@@ -160,7 +160,7 @@ public class Node{
 		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		String semesterCode = "";
 		
-		int index = 0;
+		int index = 1;
 		
 //		if(weekOfYear >= 32 && weekOfYear < 51) {
 //			index = 3;
@@ -179,14 +179,14 @@ public class Node{
 //			semesterCode += semesters[index] + " " + ++year;
 //		}
 		
-		if(weekOfYear >= 21 && weekOfYear < 51) {
-			index = 1;
-			semesterCode = semesters[index] + " " + year;
-		}
-		else if(weekOfYear >= 1 && weekOfYear < 21) {
-			index = 0;
-			semesterCode = semesters[index] + " " + year;
-		}
+//		if(weekOfYear >= 21 && weekOfYear < 51) {
+//			index = 1;
+//			semesterCode = semesters[index] + " " + year;
+//		}
+//		else if(weekOfYear >= 1 && weekOfYear < 21) {
+//			index = 0;
+//			semesterCode = semesters[index] + " " + year;
+//		}
 		
 		for(int i = 1; i < this.path.size(); i++) {
 			//updates the index for the semester array to get the correct semester	
@@ -206,7 +206,14 @@ public class Node{
 		return semesterCourses;
 	}
 	
-	
+	public String toString() {
+		String classes = "[";
+		for(String s : this.getData()) {
+			classes += s + ", ";
+		}
+		classes += "]";
+		return classes;
+	}
 	
 	
 	

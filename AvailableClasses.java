@@ -71,8 +71,8 @@ public class AvailableClasses {
 //		for(int i = 0; i < availableClasses.size(); i++){
 //			System.out.println(availableClasses.get(i));
 //		}
-		System.out.println("Current semester: " + currSemester);
-		System.out.println(availableClasses);
+//		System.out.println("Current semester: " + currSemester);
+//		System.out.println(availableClasses);
 		return availableClasses;
 		
 	}
