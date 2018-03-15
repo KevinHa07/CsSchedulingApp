@@ -23,7 +23,7 @@ public class MakeTree {
 		
 	}
 	
-	public List<SemesterCourses> start(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMin, int unitsMax) {
+	public List<SemesterCourses> start(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMax) {
 		Queue<Node> queue = new LinkedList<Node>();
 		Set<List<String>> visited = new HashSet<List<String>>();
 		List<SemesterCourses> sc = null;
@@ -37,6 +37,8 @@ public class MakeTree {
 //		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
 //		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+		int year = Year.now().getValue();
+
 		
 		int index = 1;
 		
@@ -72,7 +74,7 @@ public class MakeTree {
 		parentNode.startPath(parentNode);	
 		
 		while(!queue.isEmpty()){
-			
+
 			Node curr = new Node(null);
 			curr = queue.remove();
 			
@@ -82,7 +84,20 @@ public class MakeTree {
 			
 			//check if curr is in visited
 			if(isVisited(visited, curr)){
-				
+				counter++;
+				if(counter == nextLevelSize) {//counter is the the amount of children in the current level and if it equals to nextlevel, transition to next semester
+					nextLevelSize = currLevelSize;
+					currLevelSize = 0;
+					counter = 0;
+					//increment semesters
+					if(index % 2 == 0) { 
+						index++;
+					}
+					else {
+						index = 0;
+						year++;
+					}
+				}
 				//if it is visited then we dont need to add the children again
 				//the rest shall be skipped and the queue will move on to the next element
 				
@@ -115,8 +130,9 @@ public class MakeTree {
 
 				}else{
 					counter++;
+//					System.out.println("Current Year: " + semesters[index] + " " + year + "   " + "queue size: " + queue.size() + "    curlev:" + currLevelSize + "    " +  counter + ":" + nextLevelSize);
 					//add children to the path
-					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMin, unitsMax, semesters[index])){
+					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMax, semesters[index])){
 						curr.addChild(c);
 						c.addToPath(c, curr.getPath());
 						
@@ -131,9 +147,11 @@ public class MakeTree {
 						//increment semesters
 						if(index % 2 == 0) { 
 							index++;
+							
 						}
 						else {
 							index = 0;
+							year++;
 						}
 					}
 					else if(counter == nextLevelSize) {//counter is the the amount of children in the current level and if it equals to nextlevel, transition to next semester
@@ -146,6 +164,7 @@ public class MakeTree {
 						}
 						else {
 							index = 0;
+							year++;
 						}
 					}
 					
@@ -161,7 +180,7 @@ public class MakeTree {
 		return sc;
 	}
 	
-	public List<List<SemesterCourses>> getSemesterCourses(){
+	public List<List<SemesterCourses>> getListOfPaths(){
 		return listOfPaths;
 	}
 	

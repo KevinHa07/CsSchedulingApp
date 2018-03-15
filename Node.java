@@ -42,20 +42,22 @@ public class Node{
         this.children.addAll(children);
     }
 
-	public List<Node> getChildren(HashMap<String, ClassInfo> listOfClasses, List<String> classesTaken, int unitsMin, int unitsMax, String semester) {
+	public List<Node> getChildren(HashMap<String, ClassInfo> listOfClasses, List<String> classesTaken, int unitsMax, String semester) {
 		
 		Set<String> keySet = listOfClasses.keySet();
 		List<String> allClasses = new ArrayList<String>(keySet);
-		int electiveUnits = getNumOfElectiveUnits(listOfClasses);
+		
 		//find classes that are available to take next
 		AvailableClasses av = new AvailableClasses(classesTaken);
-		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, electiveUnits);
+		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits);
 		this.availableClasses = available;
 				
 		//find all combination
 		Combinations cb = new Combinations();
-		List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMin, unitsMax);
-				
+		List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
+		for(Node n : combOfClasses) {
+			System.out.println(n);
+		}
 		return combOfClasses;
         
     }

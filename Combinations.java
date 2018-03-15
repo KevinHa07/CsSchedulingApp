@@ -7,12 +7,10 @@ import java.util.List;
 public class Combinations {
 	
 	int maxUnit = 0;
-	int minUnit = 0;
 	
-	public List<Node> findCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int minUnits, int maxUnits) {
+	public List<Node> findCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int maxUnits) {
 		
 		maxUnit = maxUnits;
-		minUnit = minUnits;
 		
 		List<Node> combClasses = new ArrayList<Node>();
 		
@@ -29,7 +27,6 @@ public class Combinations {
 		return combClasses;
 	}
 
-
 	//this method creates a new temp ArrayList to store the new combinations in
 	public void printCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int sizeOfavailList, int sizeOfNextCombo, List<Node> combClasses){
 	
@@ -41,7 +38,6 @@ public class Combinations {
     	
 		//check to see if combo should be added to list
 		storeCombinations(listOfClasses, available, tempCombo, 0, sizeOfavailList - 1, 0, sizeOfNextCombo, combClasses);
-		
 	}
 	
 	public void storeCombinations(HashMap<String, ClassInfo> listOfClasses, List<String> available, List<String> tempCombo, int start, int end, int index, int sizeOfNextCombo,  List<Node> combClasses){
@@ -58,23 +54,18 @@ public class Combinations {
                tempList.add(temp);
                
                if(listOfClasses.containsKey(temp)) {
-   				
    						classInfo.add(listOfClasses.get(temp));
                }
-               
             }
             
             //check to see if the combo fits in the desired unit preference
-            
             int totalUnits = 0;
             for (int j = 0; j < classInfo.size(); j++){
             	totalUnits += classInfo.get(j).getUnits();
             }
             
-            if(maxUnit >= totalUnits && minUnit <= totalUnits ){
-            	
+            if(maxUnit >= totalUnits){
             	Node node = new Node(tempList);
-            	
             	combClasses.add(node);
 			}
             
@@ -82,13 +73,10 @@ public class Combinations {
             for(int i = 0; combClasses.size() > 3;){
             	combClasses.remove(i);
             }
-            
-            
-            
+
             return;
 		}
-		
-		
+
 		for (int i = start; i <= end; i++){
             tempCombo.set(index, available.get(i));
             //index + 1 replaces index with all possible elements
