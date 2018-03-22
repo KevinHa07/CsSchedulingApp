@@ -55,9 +55,9 @@ public class Node{
 		//find all combination
 		Combinations cb = new Combinations();
 		List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
-		for(Node n : combOfClasses) {
-			System.out.println(n);
-		}
+//		for(Node n : combOfClasses) {
+//			System.out.println(n);
+//		}
 		return combOfClasses;
         
     }

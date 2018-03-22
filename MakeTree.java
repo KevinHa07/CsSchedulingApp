@@ -27,9 +27,9 @@ public class MakeTree {
 		Queue<Node> queue = new LinkedList<Node>();
 		Set<List<String>> visited = new HashSet<List<String>>();
 		List<SemesterCourses> sc = null;
-		boolean breakWhile = false;
-		int numberOfRoadMapsGenerated = 0;
-		int amountOfRoadMaps = 3;
+//		boolean breakWhile = false;
+//		int numberOfRoadMapsGenerated = 0;
+//		int amountOfRoadMaps = 3;
 		int currLevelSize = 0;
 		int nextLevelSize = 0;
 		int counter = 0;
@@ -109,28 +109,16 @@ public class MakeTree {
 					//List<Node> path = curr.getPath();
 					sc = curr.getSemesterCourses();//list of semester courses for the current path
 					
-					
-					if(numberOfRoadMapsGenerated < amountOfRoadMaps) {//add path to roadmap
-						numberOfRoadMapsGenerated++;
-						listOfPaths.add(sc);
-					}
-					else {
-						System.out.println("Number of paths: " + listOfPaths.size());
-						for(List<SemesterCourses> c : listOfPaths) {
-							System.out.println(c);
-						}
-						breakWhile = true;
-					}
+					listOfPaths.add(sc);
 					
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
-					System.out.print(totaltime);
+					System.out.println(totaltime);
 					
-					//System.exit(0);
+					
 
 				}else{
 					counter++;
-//					System.out.println("Current Year: " + semesters[index] + " " + year + "   " + "queue size: " + queue.size() + "    curlev:" + currLevelSize + "    " +  counter + ":" + nextLevelSize);
 					//add children to the path
 					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMax, semesters[index])){
 						curr.addChild(c);
@@ -171,10 +159,7 @@ public class MakeTree {
 					
 				}
 			}
-			
-			if(breakWhile == true){
-				break;
-			}
+
 		}
 		
 		return sc;

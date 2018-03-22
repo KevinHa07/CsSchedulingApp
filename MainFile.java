@@ -26,6 +26,8 @@ public class MainFile {
 		//returns the list of semester courses
 		List<SemesterCourses> sc = DC.Display();
 		
+		List<List<SemesterCourses>> listOfPaths = DC.getListOfPaths();
+		
 		//ask if user would like to switch classes
 		//Constraint c = new Constraint();
 	}

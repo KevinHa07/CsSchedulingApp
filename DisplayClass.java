@@ -11,6 +11,7 @@ public class DisplayClass {
 	Scanner in = new Scanner(System.in);
 	int maxUnits;
 	int unitsMax;
+	List<List<SemesterCourses>> listOfPaths;
 
 	public DisplayClass(List<ClassInfo> list, List<String> classesTaken, int maxUnits) {
 		this.ClassList = list;
@@ -53,7 +54,12 @@ public class DisplayClass {
 		MakeTree mt = new MakeTree();
 		
 		List<SemesterCourses> sc = mt.start(classesTaken, map, unitsMax);
+		listOfPaths = mt.getListOfPaths();
 		return sc;
+	}
+	
+	public List<List<SemesterCourses>> getListOfPaths() {
+		return listOfPaths;
 	}
 
 	//this method goes through each class and asks if the user has taken them

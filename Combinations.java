@@ -70,7 +70,7 @@ public class Combinations {
 			}
             
             //keep top 3
-            for(int i = 0; combClasses.size() > 3;){
+            for(int i = 0; combClasses.size() > 10;){
             	combClasses.remove(i);
             }
 
