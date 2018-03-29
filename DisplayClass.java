@@ -1,5 +1,6 @@
 package BFS;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -9,17 +10,28 @@ public class DisplayClass {
 	List<ClassInfo> ClassList;
 	List<String> classesTaken;
 	Scanner in = new Scanner(System.in);
-	int maxUnits;
-	int unitsMax;
 	List<List<SemesterCourses>> listOfPaths;
+	boolean constraint;
+	String name;
+	String semester;
+	String year;
 
-	public DisplayClass(List<ClassInfo> list, List<String> classesTaken, int maxUnits) {
+	public DisplayClass(List<ClassInfo> list, List<String> classesTaken) {
 		this.ClassList = list;
 		this.classesTaken = classesTaken;
-		this.maxUnits = maxUnits;
 	}
 	
-	public List<SemesterCourses> Display() {
+	public DisplayClass(List<ClassInfo> list, List<String> classesTaken, boolean constraint, String name, String semester, String year) {
+		this.ClassList = list;
+		this.classesTaken = classesTaken;
+		this.constraint = constraint;
+		this.name = name;
+		this.semester = semester;
+		this.year = year;
+
+	}
+	
+	public List<SemesterCourses> Display(int unitsMax) {
 //		List<String> classesTaken = new ArrayList<>();
 //
 //		//ask if user if they have taken class
@@ -29,15 +41,15 @@ public class DisplayClass {
 //
 //		System.out.println();
 //		System.out.println();
-		
-		//display classes that have been taken
-		for (int i = 0; i < ClassList.size(); i++) {
-			if (ClassList.get(i).isCompleted()) {
-				System.out.println(ClassList.get(i).toString());
-				classesTaken.add(ClassList.get(i).getName());
-			}
-
-		}
+//		
+//		//display classes that have been taken
+//		for (int i = 0; i < ClassList.size(); i++) {
+//			if (ClassList.get(i).isCompleted()) {
+//				System.out.println(ClassList.get(i).toString());
+//				classesTaken.add(ClassList.get(i).getName());
+//			}
+//
+//		}
 		
 		
 		HashMap<String, ClassInfo> map = new HashMap<>();
@@ -48,14 +60,22 @@ public class DisplayClass {
 		}
 		
 		//get units
-		maxUnits();
+	//	maxUnits();
 		
 		//create tree
 		MakeTree mt = new MakeTree();
 		
-		List<SemesterCourses> sc = mt.start(classesTaken, map, unitsMax);
-		listOfPaths = mt.getListOfPaths();
-		return sc;
+		if(constraint){
+			mt.start(classesTaken, map, unitsMax, constraint, name, semester, year);
+			List<SemesterCourses> sc = mt.start(classesTaken, map, unitsMax, constraint);
+			return sc;
+			
+		}else{
+			List<SemesterCourses> sc = mt.start(classesTaken, map, unitsMax, constraint);
+			//listOfPaths = mt.getListOfPaths();
+			return sc;
+		}
+		
 	}
 	
 	public List<List<SemesterCourses>> getListOfPaths() {
@@ -110,13 +130,13 @@ public class DisplayClass {
 		System.out.println("What is the maximum number of Units you would like to take per Semester. ");
 		
 		try {
-		    unitsMax = Integer.parseInt(in.next());
+		    //unitsMax = Integer.parseInt(in.next());
 		    
 		} catch (NumberFormatException e) {
 			
 		    System.out.println("Invalid input");
 		    System.out.println("");
-			unitsMax = 0;
+			// = 0;
 		    maxUnits();
 		}
 	}

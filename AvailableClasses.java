@@ -5,33 +5,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import BFS.MakeTree;
-
 public class AvailableClasses {
 
 	private List<String> current;
+	private String name;
+	private String semester;
+	private int year;
+	private String y;
 	
 	//takes in a node that has an arraylist of classInfo 
 	public AvailableClasses(List<String> classtaken) {
 		this.current = classtaken;
-//		System.out.println(" ");
-//		for(int i = 0; i < classtaken.size(); i++){
-//			System.out.println(classtaken.get(i));
-//		}
-
+	}
+	
+	public AvailableClasses(List<String> classtaken, String name, String semester, int year, String y){
+		this.current = classtaken;
+		this.name = name;
+		this.semester = semester;
+		this.year = year;
+		this.y = y;
 	}
 	
 	//This method takes in the arraylist of ClassInfo to remove classes that the student has already taken from an arraylist of all classes
-	@SuppressWarnings("unchecked")
-	public List<String> checkAvailableClasses(List<String> allClasses, Map<String, ClassInfo> allClassInfo, String currSemester, int electiveUnits) {
+	public List<String> checkAvailableClasses(List<String> allClasses, Map<String, ClassInfo> allClassInfo, String currSemester, int electiveUnits, boolean constraint) {
 		//creates a set of all classes
 		Set<String> setOfAvailableClasses = new HashSet<String>(allClasses);
 		
 		setOfAvailableClasses.removeAll(current);//removes all classes taken from the list of classes to have it only have available classes for student to take
 		
 		List<String> availableClasses = new ArrayList<>();
-		
-		
 		//if student hasn't taken any classes, add classes that has no prerequisites into available class arraylist
 		if(current.size() == 0) {
 			for(String className: setOfAvailableClasses){
@@ -43,16 +45,18 @@ public class AvailableClasses {
 						}
 					}
 				}
-				
+			}
+			
+			if(constraint){
+				if(!currSemester.equals(semester) || !Integer.toString(year).equals(y)){
+					if(availableClasses.contains(name)){
+						availableClasses.remove(name);
+					}
+				}
 			}
 			return availableClasses;
 		}
-
-//		List<ClassInfo> curr = new ArrayList<>();
-//		for(int i = 0; i < current.size(); i++){
-//			curr.add(allClassInfo.get(current.get(i)));
-//		}
-		
+		//if student has taken classes
 		for(String className: setOfAvailableClasses){
 			if(allClassInfo.containsKey(className)) {
 				ClassInfo classInfo = allClassInfo.get(className);
@@ -67,17 +71,13 @@ public class AvailableClasses {
 				}
 			}
 		}
-//		System.out.println("Current semester: " + currSemester);
-//		for(int i = 0; i < availableClasses.size(); i++){
-//			System.out.println(availableClasses.get(i));
-//		}
-//		System.out.println("Current semester: " + currSemester);
-//		System.out.println(availableClasses);
+		if(constraint){
+			if(!currSemester.equals(semester) || !Integer.toString(year).equals(y)){
+				if(availableClasses.contains(name)){
+					availableClasses.remove(name);
+				}
+			}
+		}
 		return availableClasses;
-		
-	}
-		
-
-	
+	}	
 }
-

@@ -6,10 +6,12 @@ public class SemesterCourses {
 	
 	String semesterCode;
 	List<String> courses;
+	List<String> availableCourses;
 	
-	public SemesterCourses(String sc, List<String> courses) {
+	public SemesterCourses(String sc, List<String> courses, List<String> availableCourses) {
 		this.semesterCode = sc;
 		this.courses = courses;
+		this.availableCourses = availableCourses;
 	}
 
 	public String getSemesterCode() {
@@ -28,7 +30,15 @@ public class SemesterCourses {
 		this.courses = courses;
 	}
 	
+	public List<String> getAvailableCourses() {
+		return availableCourses;
+	}
+
+	public void setAvailableCourses(List<String> availableCourses) {
+		this.availableCourses = availableCourses;
+	}
+
 	public String toString() {
-		return semesterCode + courses;
+		return semesterCode + courses + "\nAvailable courses: " + availableCourses;
 	}
 }

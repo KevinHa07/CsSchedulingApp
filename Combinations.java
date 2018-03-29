@@ -7,7 +7,18 @@ import java.util.List;
 public class Combinations {
 	
 	int maxUnit = 0;
+	String name = "";
+	boolean constraint = false;
 	
+	
+	public Combinations(String name) {
+		this.name = name;
+		constraint = true;
+	}
+	
+	public Combinations() {
+	}
+
 	public List<Node> findCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int maxUnits) {
 		
 		maxUnit = maxUnits;
@@ -23,6 +34,17 @@ public class Combinations {
 			
 			printCombination(listOfClasses, available, sizeOfavailList, sizeOfNextCombo, combClasses);
 		}
+		
+		//make sure the only classes in combclass include the constraint class
+        if(constraint){
+        	for(int i = 0; i < combClasses.size(); i++){
+        		if(combClasses.get(i).getData().contains(name)){
+        			
+        		}else{
+        			combClasses.remove(i);
+        		}
+            }
+        }
 		
 		return combClasses;
 	}
@@ -69,7 +91,7 @@ public class Combinations {
             	combClasses.add(node);
 			}
             
-            //keep top 3
+            //keep top 10
             for(int i = 0; combClasses.size() > 10;){
             	combClasses.remove(i);
             }

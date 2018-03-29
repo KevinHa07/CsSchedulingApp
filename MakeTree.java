@@ -1,6 +1,5 @@
 package BFS;
 
-import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,9 @@ public class MakeTree {
 	//test time
 	public static long startTime = System.currentTimeMillis();
 	private List<List<SemesterCourses>> listOfPaths = new ArrayList<>();
+	String name;
+	String semester;
+	String y;
 	
 	//set the initial taken classes as parent node. Start the BFS. Go through the queue, the 
 	//children of the element, remove the head, repeat
@@ -23,56 +25,38 @@ public class MakeTree {
 		
 	}
 	
-	public List<SemesterCourses> start(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMax) {
+	public void start(List<String> classesTaken, HashMap<String, ClassInfo> map, int unitsMax,
+			boolean constraint, String name, String semester, String year) {
+		this.name = name;
+		this.semester = semester;
+		this.y = year;
+		
+	}
+
+	public List<SemesterCourses> start(List<String> classesTaken, HashMap<String, ClassInfo> listOfClassInfo, int unitsMax, boolean constraint) {
 		Queue<Node> queue = new LinkedList<Node>();
 		Set<List<String>> visited = new HashSet<List<String>>();
 		List<SemesterCourses> sc = null;
-//		boolean breakWhile = false;
-//		int numberOfRoadMapsGenerated = 0;
-//		int amountOfRoadMaps = 3;
+		boolean breakWhile = false;
+		int numberOfRoadMapsGenerated = 0;
+		int amountOfRoadMaps = 3;
 		int currLevelSize = 0;
 		int nextLevelSize = 0;
 		int counter = 0;
 		
-//		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
-//		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		int year = Year.now().getValue();
-
 		
 		int index = 1;
-		
-//		if(weekOfYear >= 32 && weekOfYear < 51) {
-//			index = 3;
-//			semesterCode += semesters[index] + " " + year;
-//		}
-//		else if(weekOfYear >= 1 && weekOfYear < 3) {
-//			index = 0;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-//		else if(weekOfYear >= 3 && weekOfYear < 21) {
-//			index = 1;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-//		else if(weekOfYear >= 21 && weekOfYear < 32) {
-//			index = 2;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-		
-//		if(weekOfYear >= 21 && weekOfYear < 51) {
-//			index = 1;
-//		}
-//		else if(weekOfYear >= 1 && weekOfYear < 21) {
-//			index = 0;
-//		}
+	
 
 		//initial parent node
 		Node parentNode = new Node(null);
 		parentNode.setData(classesTaken);
-		
 		queue.add(parentNode); 
 		parentNode.startPath(parentNode);	
 		
+		//start of BFS
 		while(!queue.isEmpty()){
 
 			Node curr = new Node(null);
@@ -106,28 +90,43 @@ public class MakeTree {
 				//check if curr is goal node
 				if(checkGoal(curr)){			
 					//if so print path
-					//List<Node> path = curr.getPath();
 					sc = curr.getSemesterCourses();//list of semester courses for the current path
-					
 					listOfPaths.add(sc);
-					
+
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
 					System.out.println(totaltime);
 					
+//					break;
 					
+					//System.exit(0);
 
 				}else{
 					counter++;
 					//add children to the path
-					for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMax, semesters[index])){
-						curr.addChild(c);
-						c.addToPath(c, curr.getPath());
+					
+					if(constraint){
+						for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMax, semesters[index], year, constraint, name, semester, y)){
+							curr.addChild(c);
+							c.addToPath(c, curr.getPath());
+							
+							//get the children and add them to the queue
+							queue.add(c);
+							currLevelSize++;
+						}
 						
-						//get the children and add them to the queue
-						queue.add(c);
-						currLevelSize++;
+					}else{
+						for( Node c : curr.getChildren(listOfClassInfo, curr.getTakenClasses(), unitsMax, semesters[index], year, constraint)){
+							curr.addChild(c);
+							c.addToPath(c, curr.getPath());
+							
+							//get the children and add them to the queue
+							queue.add(c);
+							currLevelSize++;
+						}
+						
 					}
+					
 					if(nextLevelSize == 0) {//after getting the children for the first time set currlevel to nextlevel to keep track of level of when the semester should change
 						nextLevelSize = currLevelSize;
 						currLevelSize = 0;
@@ -155,11 +154,8 @@ public class MakeTree {
 							year++;
 						}
 					}
-					
-					
 				}
 			}
-
 		}
 		
 		return sc;
@@ -169,6 +165,7 @@ public class MakeTree {
 		return listOfPaths;
 	}
 	
+	//visited is a set that keeps track of everything that goes through the queue. If there is a repeated element visited doesn't let the children go into the queue again
 	public boolean isVisited(Set<List<String>> visited, Node curr){
 		
 		int pSize = curr.getPath().size();
@@ -181,6 +178,7 @@ public class MakeTree {
 		}
 	}
 	
+	//checks if a semester has cs4962 and cs4963
 	public boolean checkGoal(Node curr){
 		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
 			return true;
@@ -189,5 +187,4 @@ public class MakeTree {
 			return false;
 		}
 	}
-	
 }

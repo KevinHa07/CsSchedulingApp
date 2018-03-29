@@ -1,11 +1,19 @@
 package BFS;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Constraint {
 	Scanner in = new Scanner(System.in);
+	private String name;
+	private String semester;
+	private String year;
 	
-	public Constraint(){
+	public Constraint() {
+		
+	}
+	
+	public Constraint(List<ClassInfo> classInfo, List<String> classesTaken, int maxUnits){
 		System.out.println();
 		System.out.println();
 		System.out.println("Would you like to switch your classes? (yes/no): ");
@@ -15,12 +23,19 @@ public class Constraint {
 			System.out.println("What Class would you like to take and when ex(CS1010 Spring 2018): ");
 			String[] option1 = in.nextLine().split(" ");
 			
-			if(isAvailable(option1[0], option1[1])){
+			if(isAvailable(option1[0], option1[1], classInfo)){
 				
+				name = option1[0];
+				semester = option1[1];
+				year = option1[2];
+				
+				DisplayClass DC = new DisplayClass(classInfo, classesTaken, true, name, semester, year);
+				List<SemesterCourses> sc = DC.Display(maxUnits);
+				Constraint c = new Constraint(classInfo, classesTaken, maxUnits);
 				
 			}else{
 				System.out.println("You can not take this class that semester");
-				Constraint c = new Constraint();
+				Constraint c = new Constraint(classInfo, classesTaken, maxUnits);
 			}
 			 
 			
@@ -28,24 +43,16 @@ public class Constraint {
 			System.exit(0);
 		}
 	}
-	
-	public boolean isAvailable(String name, String semester){
+
+	public boolean isAvailable(String name, String semester, List<ClassInfo> classInfo){
 		
-//		if(){
-			return true;
-//			
-//		}else{
-//			return false;
-//		}
-		
-		
+		for(int i = 0; i < classInfo.size(); i++){
+			if(classInfo.get(i).getName().equals(name)){
+				if(classInfo.get(i).getSemester().contains(semester)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
-
 }
-
-
-
-//In the constructor there will be a method that will check and make sure that class is available to take that semester
-//If so go on, if not return an error statement
-//Once in available class. When it gets time to the semester that the user wants, we will check and make sure that the class the user wants is in the available classes
-//Once in combination class we will make sure that the only lists that get added to the combClass list are ones that have the user specified class in it

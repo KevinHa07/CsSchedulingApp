@@ -1,12 +1,9 @@
 package BFS;
 
-import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Node{
@@ -42,32 +39,46 @@ public class Node{
         this.children.addAll(children);
     }
 
-	public List<Node> getChildren(HashMap<String, ClassInfo> listOfClasses, List<String> classesTaken, int unitsMax, String semester) {
+	public List<Node> getChildren(HashMap<String, ClassInfo> listOfClasses, List<String> classesTaken, int unitsMax, String semester, int year, boolean constraint) {
 		
 		Set<String> keySet = listOfClasses.keySet();
 		List<String> allClasses = new ArrayList<String>(keySet);
 		
 		//find classes that are available to take next
-		AvailableClasses av = new AvailableClasses(classesTaken);
-		List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits);
-		this.availableClasses = available;
-				
-		//find all combination
-		Combinations cb = new Combinations();
-		List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
-//		for(Node n : combOfClasses) {
-//			System.out.println(n);
-//		}
-		return combOfClasses;
-        
+			AvailableClasses av = new AvailableClasses(classesTaken);
+			List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits, constraint);
+			this.availableClasses = available;
+			
+			//find all combination
+			Combinations cb = new Combinations();
+			List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
+					
+			return combOfClasses;   
     }
-//    public void insertChildren(Node<?> child) {
-//    	
-//    }
-//    
-//    public void deleteChildren(Node<?> child) {
-//    	
-//    }
+	
+	public List<Node> getChildren(HashMap<String, ClassInfo> listOfClasses, List<String> classesTaken, int unitsMax, String semester, int year, boolean constraint, String name, String sem, String y) {
+		
+		Set<String> keySet = listOfClasses.keySet();
+		List<String> allClasses = new ArrayList<String>(keySet);
+		
+		//find classes that are available to take next
+			
+			AvailableClasses av = new AvailableClasses(classesTaken, name, sem, year, y);
+			List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits, constraint);
+			this.availableClasses = available;
+			
+			//find all combination
+			if(available.contains(name)){
+				Combinations cb = new Combinations(name);
+				List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
+				return combOfClasses;
+			}
+			else{
+				Combinations c = new Combinations();
+				List<Node> combOfClasses = c.findCombination(listOfClasses, available, unitsMax);
+				return combOfClasses;
+			}		
+    }
 
     public List<String> getData() {
         return classTaken;
@@ -113,7 +124,6 @@ public class Node{
 		setTakenClasses();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public List<Node> getPath(){
 		return this.path;
 	}
@@ -156,44 +166,16 @@ public class Node{
 	}
 
 	public List<SemesterCourses> getSemesterCourses() {
-//		String[] semesters = {"Winter", "Spring", "Summer", "Fall"};
 		String[] semesters = {"Spring", "Fall"};
 		int year = Year.now().getValue();
-		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		String semesterCode = "";
 		
 		int index = 1;
 		
-//		if(weekOfYear >= 32 && weekOfYear < 51) {
-//			index = 3;
-//			semesterCode += semesters[index] + " " + year;
-//		}
-//		else if(weekOfYear >= 1 && weekOfYear < 3) {
-//			index = 0;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-//		else if(weekOfYear >= 3 && weekOfYear < 21) {
-//			index = 1;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-//		else if(weekOfYear >= 21 && weekOfYear < 32) {
-//			index = 2;
-//			semesterCode += semesters[index] + " " + ++year;
-//		}
-		
-//		if(weekOfYear >= 21 && weekOfYear < 51) {
-//			index = 1;
-//			semesterCode = semesters[index] + " " + year;
-//		}
-//		else if(weekOfYear >= 1 && weekOfYear < 21) {
-//			index = 0;
-//			semesterCode = semesters[index] + " " + year;
-//		}
-		
 		for(int i = 1; i < this.path.size(); i++) {
 			//updates the index for the semester array to get the correct semester	
 			semesterCode = semesters[index] + " " + year;
-			SemesterCourses sc = new SemesterCourses(semesterCode, this.path.get(i).getData()); 
+			SemesterCourses sc = new SemesterCourses(semesterCode, this.path.get(i).getData(), this.path.get(i).getAvailableClasses()); 
 			semesterCourses.add(sc);
 			System.out.println(sc);
 			if(index % 2 == 0) { 
@@ -206,17 +188,5 @@ public class Node{
 			}
 		}
 		return semesterCourses;
-	}
-	
-	public String toString() {
-		String classes = "[";
-		for(String s : this.getData()) {
-			classes += s + ", ";
-		}
-		classes += "]";
-		return classes;
-	}
-	
-	
-	
+	}	
 }
