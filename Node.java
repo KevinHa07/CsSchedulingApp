@@ -48,11 +48,10 @@ public class Node{
 			AvailableClasses av = new AvailableClasses(classesTaken);
 			List<String> available = av.checkAvailableClasses(allClasses, listOfClasses, semester, this.numOfElectiveUnits, constraint);
 			this.availableClasses = available;
-			
 			//find all combination
 			Combinations cb = new Combinations();
-			List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
-					
+			List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax, numOfElectiveUnits);
+			
 			return combOfClasses;   
     }
 	
@@ -70,12 +69,12 @@ public class Node{
 			//find all combination
 			if(available.contains(name)){
 				Combinations cb = new Combinations(name);
-				List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax);
+				List<Node> combOfClasses = cb.findCombination(listOfClasses, available, unitsMax, numOfElectiveUnits);
 				return combOfClasses;
 			}
 			else{
 				Combinations c = new Combinations();
-				List<Node> combOfClasses = c.findCombination(listOfClasses, available, unitsMax);
+				List<Node> combOfClasses = c.findCombination(listOfClasses, available, unitsMax, numOfElectiveUnits);
 				return combOfClasses;
 			}		
     }
@@ -96,13 +95,7 @@ public class Node{
         return parent;
     }
 
-    public int getNumOfElectiveUnits(HashMap<String, ClassInfo> listOfClasses) {
-    	for(String c : getTakenClasses()) {
-    		ClassInfo ci = listOfClasses.get(c);
-    		if(ci.isElective()) {
-    			addNumOfElectiveUnits(ci.getUnits());
-    		}
-    	}
+    public int getNumOfElectiveUnits() {
 		return numOfElectiveUnits;
 	}
 

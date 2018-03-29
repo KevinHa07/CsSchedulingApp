@@ -65,8 +65,13 @@ public class AvailableClasses {
 						availableClasses.add(className);
 					}
 					//if there's a prerequisite, check to see if the student has taken the classes needed to add class to available classes that user can take
-					else if(classInfo.getPrerequisites() != null && current.containsAll(classInfo.getPrerequisites()) && electiveUnits < 18) { 
-						availableClasses.add(className);	
+					else if(classInfo.getPrerequisites() != null && current.containsAll(classInfo.getPrerequisites())) { 
+						if(classInfo.isElective() && electiveUnits < 18){
+							availableClasses.add(className);
+						}
+						else if(!classInfo.isElective()){
+							availableClasses.add(className);
+						}	
 					}
 				}
 			}

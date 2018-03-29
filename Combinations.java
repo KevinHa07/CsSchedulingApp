@@ -19,7 +19,7 @@ public class Combinations {
 	public Combinations() {
 	}
 
-	public List<Node> findCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int maxUnits) {
+	public List<Node> findCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int maxUnits, int numOfElectives) {
 		
 		maxUnit = maxUnits;
 		
@@ -32,7 +32,7 @@ public class Combinations {
 			int sizeOfavailList = available.size();
 			int sizeOfNextCombo = i+1;
 			
-			printCombination(listOfClasses, available, sizeOfavailList, sizeOfNextCombo, combClasses);
+			printCombination(listOfClasses, available, sizeOfavailList, sizeOfNextCombo, combClasses, numOfElectives);
 		}
 		
 		//make sure the only classes in combclass include the constraint class
@@ -50,7 +50,7 @@ public class Combinations {
 	}
 
 	//this method creates a new temp ArrayList to store the new combinations in
-	public void printCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int sizeOfavailList, int sizeOfNextCombo, List<Node> combClasses){
+	public void printCombination(HashMap<String, ClassInfo> listOfClasses, List<String> available, int sizeOfavailList, int sizeOfNextCombo, List<Node> combClasses, int numOfElectives){
 	
 		List<String> tempCombo = new ArrayList<String>(sizeOfNextCombo);
     	for(int i = 0; i < sizeOfNextCombo; i++) {
@@ -59,10 +59,10 @@ public class Combinations {
     	}
     	
 		//check to see if combo should be added to list
-		storeCombinations(listOfClasses, available, tempCombo, 0, sizeOfavailList - 1, 0, sizeOfNextCombo, combClasses);
+		storeCombinations(listOfClasses, available, tempCombo, 0, sizeOfavailList - 1, 0, sizeOfNextCombo, combClasses, numOfElectives);
 	}
 	
-	public void storeCombinations(HashMap<String, ClassInfo> listOfClasses, List<String> available, List<String> tempCombo, int start, int end, int index, int sizeOfNextCombo,  List<Node> combClasses){
+	public void storeCombinations(HashMap<String, ClassInfo> listOfClasses, List<String> available, List<String> tempCombo, int start, int end, int index, int sizeOfNextCombo,  List<Node> combClasses, int numOfElectives){
 		
 		//will start to add combinations to combClasses
 		if (index == sizeOfNextCombo){
@@ -83,16 +83,21 @@ public class Combinations {
             //check to see if the combo fits in the desired unit preference
             int totalUnits = 0;
             for (int j = 0; j < classInfo.size(); j++){
+            	if(classInfo.get(j).isElective()) {
+            		numOfElectives += classInfo.get(j).getUnits();
+            	}
+            	
             	totalUnits += classInfo.get(j).getUnits();
             }
             
-            if(maxUnit >= totalUnits){
+            if(maxUnit >= totalUnits && numOfElectives <= 18){
             	Node node = new Node(tempList);
+            	node.addNumOfElectiveUnits(numOfElectives);
             	combClasses.add(node);
 			}
             
             //keep top 10
-            for(int i = 0; combClasses.size() > 10;){
+            for(int i = 0; combClasses.size() > 20;){
             	combClasses.remove(i);
             }
 
@@ -102,7 +107,7 @@ public class Combinations {
 		for (int i = start; i <= end; i++){
             tempCombo.set(index, available.get(i));
             //index + 1 replaces index with all possible elements
-            storeCombinations(listOfClasses, available, tempCombo, i+1, end, index+1, sizeOfNextCombo, combClasses);
+            storeCombinations(listOfClasses, available, tempCombo, i+1, end, index+1, sizeOfNextCombo, combClasses, numOfElectives);
         }
 	}
 }
