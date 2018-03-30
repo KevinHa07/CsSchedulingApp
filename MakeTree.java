@@ -37,9 +37,6 @@ public class MakeTree {
 		Queue<Node> queue = new LinkedList<Node>();
 		Set<List<String>> visited = new HashSet<List<String>>();
 		List<SemesterCourses> sc = null;
-		boolean breakWhile = false;
-		int numberOfRoadMapsGenerated = 0;
-		int amountOfRoadMaps = 3;
 		int currLevelSize = 0;
 		int nextLevelSize = 0;
 		int counter = 0;
@@ -96,10 +93,6 @@ public class MakeTree {
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
 					System.out.println(totaltime);
-					
-//					break;
-					
-					//System.exit(0);
 
 				}else{
 					counter++;

@@ -42,6 +42,7 @@ public class Combinations {
         			
         		}else{
         			combClasses.remove(i);
+        			i--;
         		}
             }
         }
