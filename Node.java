@@ -168,6 +168,7 @@ public class Node{
 		for(int i = 1; i < this.path.size(); i++) {
 			//updates the index for the semester array to get the correct semester	
 			semesterCode = semesters[index] + " " + year;
+			this.path.get(i-1).getAvailableClasses().removeAll(this.path.get(i).getData());
 			SemesterCourses sc = new SemesterCourses(semesterCode, this.path.get(i).getData(), this.path.get(i - 1).getAvailableClasses()); 
 			semesterCourses.add(sc);
 			System.out.println(sc);
