@@ -46,8 +46,13 @@ public class Combinations {
         		}
             }
         }
+        
+        List<Node> classInfo2 = new ArrayList<>();
+        for(int i = combClasses.size() - 1; i >= 0; i--){
+        	classInfo2.add(combClasses.get(i));
+        }
 		
-		return combClasses;
+		return classInfo2;
 	}
 
 	//this method creates a new temp ArrayList to store the new combinations in
@@ -76,9 +81,9 @@ public class Combinations {
                temp = tempCombo.get(j);
                tempList.add(temp);
                
-               if(listOfClasses.containsKey(temp)) {
-   						classInfo.add(listOfClasses.get(temp));
-               }
+//               if(listOfClasses.containsKey(temp)) {
+   					classInfo.add(listOfClasses.get(temp));
+//               }
             }
             
             //check to see if the combo fits in the desired unit preference
@@ -97,8 +102,20 @@ public class Combinations {
             	combClasses.add(node);
 			}
             
-            //keep top 10
-            for(int i = 0; combClasses.size() > 20;){
+            if(available.contains("CS1010") && available.contains("MATH2110")){
+                for(int i = 0; i < combClasses.size(); i++){
+                    if(combClasses.get(i).getData().contains("CS1010") && combClasses.get(i).getData().contains("MATH2110")){
+
+                    }
+                    else{
+                        combClasses.remove(i);
+                        i--;
+                    }
+                }
+            }
+            
+            //keep top combinations
+            for(int i = 0; combClasses.size() > 60;){
             	combClasses.remove(i);
             }
 

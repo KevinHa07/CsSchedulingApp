@@ -27,7 +27,7 @@ public class FileInput {
         try {
             br = new BufferedReader(new FileReader(this.csvFile));
             while ((line = br.readLine()) != null) {
-            	System.out.println(line);
+//            	System.out.println(line);
             	// use comma as separator
                 String[] classInfo = line.split(cvsSplitBy);
                 this.classNames.add(classInfo[0]);

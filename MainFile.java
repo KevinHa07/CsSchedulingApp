@@ -14,7 +14,7 @@ public class MainFile {
 		//classes taken sent in
 		List<String> ClassesTaken = new ArrayList<String>();
 		
-		int maxUnits = 12;
+		int maxUnits = 17;
 		boolean constraint = false;
 		String classInput = "";
 		//brings in the csv file and parses it in the FileInput Class

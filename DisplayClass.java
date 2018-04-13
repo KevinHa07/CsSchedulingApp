@@ -129,18 +129,18 @@ public class DisplayClass {
 	}
 	
 	//ask for max units and check if its correct	
-	public void maxUnits(){	
-		System.out.println("What is the maximum number of Units you would like to take per Semester. ");
-		
-		try {
-		    maxUnits = Integer.parseInt(in.next());
-		    
-		} catch (NumberFormatException e) {
-			
-		    System.out.println("Invalid input");
-		    System.out.println("");
-			maxUnits = 0;
-		    maxUnits();
-		}
-	}
+//	public void maxUnits(){	
+//		System.out.println("What is the maximum number of Units you would like to take per Semester. ");
+//		
+//		try {
+//		    maxUnits = Integer.parseInt(in.next());
+//		    
+//		} catch (NumberFormatException e) {
+//			
+//		    System.out.println("Invalid input");
+//		    System.out.println("");
+//			maxUnits = 0;
+//		    maxUnits();
+//		}
+//	}
 }
