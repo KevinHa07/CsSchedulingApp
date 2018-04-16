@@ -30,7 +30,11 @@ public class FileInput {
 //            	System.out.println(line);
             	// use comma as separator
                 String[] classInfo = line.split(cvsSplitBy);
-                this.classNames.add(classInfo[0]);
+                String newString = removeHyphen(classInfo[0]);
+                this.classNames.add(newString);
+                classInfo[0] = newString;
+                classInfo[2] = removeHyphen(classInfo[2]);
+                classInfo[3] = removeHyphen(classInfo[3]);
                 addToClasses(classInfo);
             }
             
@@ -46,6 +50,20 @@ public class FileInput {
                 }
             }
         }
+	}
+	
+	public String removeHyphen(String classString) {
+		if(classString.equals(null)) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder(classString);
+        for(int i = 0; i < sb.length(); i++) {
+        	if(sb.charAt(i) == '-') {
+        		sb.deleteCharAt(i);
+        		break;
+        	}
+        }
+        return sb.toString();
 	}
 	
 	public Map<String, ClassInfo> getListOfAllClasses(){

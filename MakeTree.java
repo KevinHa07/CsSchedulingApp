@@ -20,6 +20,9 @@ public class MakeTree {
 	String semester;
 	String y;
 	
+	int numOfRoadMaps = 0;
+	int maxRoadMaps = 5;
+	
 	//set the initial taken classes as parent node. Start the BFS. Go through the queue, the 
 	//children of the element, remove the head, repeat
 
@@ -85,11 +88,11 @@ public class MakeTree {
 			}else{
 				
 				//check if curr is goal node
-				if(checkGoal(curr)){			
+				if(checkGoal(curr) && numOfRoadMaps < maxRoadMaps){			
 					//if so print path
 					sc = curr.getSemesterCourses();//list of semester courses for the current path
 					listOfPaths.add(sc);
-					
+					numOfRoadMaps++;
 					long endTime = System.currentTimeMillis();
 					long totaltime = endTime  - startTime;
 					System.out.println(totaltime);
