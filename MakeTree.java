@@ -178,7 +178,7 @@ public class MakeTree {
 	
 	//checks if a semester has cs4962 and cs4963
 	public boolean checkGoal(Node curr){
-		if(curr.getData().contains("CS4962") && curr.getData().contains("CS4963")){
+		if(curr.getData().contains("CS-4962") && curr.getData().contains("CS-4963")){
 			//if(curr.getData().contains("CS4961")){
 			if(curr.getNumOfElectiveUnits() == 18){
 				return true;

@@ -102,9 +102,9 @@ public class Combinations {
             	combClasses.add(node);
 			}
             
-            if(available.contains("CS1010") && available.contains("MATH2110")){
+            if(available.contains("CS-1010") && available.contains("MATH-2110")){
                 for(int i = 0; i < combClasses.size(); i++){
-                    if(combClasses.get(i).getData().contains("CS1010") && combClasses.get(i).getData().contains("MATH2110")){
+                    if(combClasses.get(i).getData().contains("CS-1010") && combClasses.get(i).getData().contains("MATH-2110")){
 
                     }
                     else{
