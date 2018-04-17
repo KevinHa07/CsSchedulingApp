@@ -30,9 +30,9 @@ public class FileInput {
 //            	System.out.println(line);
             	// use comma as separator
                 String[] classInfo = line.split(cvsSplitBy);
-                String newString = removeHyphen(classInfo[0]);
-                this.classNames.add(newString);
-                classInfo[0] = newString;
+                
+                classInfo[0] = removeHyphen(classInfo[0]);
+                this.classNames.add(classInfo[0]);
                 classInfo[2] = removeHyphen(classInfo[2]);
                 classInfo[3] = removeHyphen(classInfo[3]);
                 addToClasses(classInfo);
