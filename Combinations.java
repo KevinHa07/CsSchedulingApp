@@ -107,6 +107,12 @@ public class Combinations {
                     if(combClasses.get(i).getData().contains("CS-1010") && combClasses.get(i).getData().contains("MATH-2110")){
 
                     }
+                    else if(combClasses.get(i).getData().contains("CS-1010")) {
+                    	
+                    }
+                    else if(combClasses.get(i).getData().contains("MATH-2110")) {
+                    	
+                    }
                     else{
                         combClasses.remove(i);
                         i--;
